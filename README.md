@@ -14,9 +14,50 @@ us = UltraSound.UltraSound(1, 1, 1, 1)
 
 Here are the input parameters for the constructor (in order):
 
-| Param No. | Name                | Type   | Description                            |
-|-----------|---------------------|--------|----------------------------------------|
-| 1         | Array Width         | Number | Width of the linear array. (cm?)       |
-| 2         | Carrier Frequency   | Number | Carrier frequency of the device. (MHz) |
-| 3         | Axial Resolution    | Number | Axial Resolution (mm?)                 |
-| 4         | Lateral Resolution  | Number | Lateral Resolution (mm?)               |
+| Param No. | Name        | Type   | Description                            |
+|-----------|-------------|--------|----------------------------------------|
+| 1         | `arr_width` | number | Width of the linear array. (cm?)       |
+| 2         | `freq`      | number | Carrier frequency of the device. (MHz) |
+| 3         | `axial`     | number | Axial Resolution (mm?)                 |
+| 4         | `lateral`   | number | Lateral Resolution (mm?)               |
+
+### Functions
+
+#### `reflect`
+
+Calculate the intensity of the reflected beam. Assumes a 90 degree incidence.
+
+```python
+us.reflect(100, 200)
+```
+
+| Param No. | Name | Type   | Description                                                       |
+|-----------|------|--------|-------------------------------------------------------------------|
+| 1         | `Z1` | number | Acoustic impedance of the material the beam is coming from.       |
+| 2         | `Z2` | number | Acoustic impedance of the material the beam is reflecting off of. |
+
+#### `transmit`
+
+Calculate the intensity of the transmitted beam. Assumes a 90 degree incidence.
+
+```python
+us.transmit(100, 200)
+```
+
+| Param No. | Name | Type   | Description                                                            |
+|-----------|------|--------|------------------------------------------------------------------------|
+| 1         | `Z1` | number | Acoustic impedance of the material the beam is coming from.            |
+| 2         | `Z2` | number | Acoustic impedance of the material the beam is being transmitted into. |
+
+#### `propagate`
+
+Calculate the intensity of the beam after it has propagated through a material for a given distance.
+
+```python
+us.propagate(0.9, 3)
+```
+
+| Param No. | Name | Type   | Description                                                              |
+|-----------|------|--------|--------------------------------------------------------------------------|
+| 1         | `mu` | number | The attenuation factor of the given material. (dB/(cm*MHz))              |
+| 2         | `z`  | number | The distance that the beam is travelling inside the given material. (cm) |
