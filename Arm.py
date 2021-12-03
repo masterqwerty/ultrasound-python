@@ -38,20 +38,20 @@ class Arm:
             for y in range(self.points_per_axis):
                 if self.is_nerve(x, y):
                     self.subject[x][y] = 4
-                elif self.is_fat(x, y):
-                    self.subject[x][y] = 1
-                elif self.is_muscle(x, y):
-                    self.subject[x][y] = 2
                 elif self.is_tumor(x, y):
                     self.subject[x][y] = 3
+                elif self.is_muscle(x, y):
+                    self.subject[x][y] = 2
+                elif self.is_fat(x, y):
+                    self.subject[x][y] = 1
 
     def is_fat(self, x, y):
         circle_radius = (x - self.points_per_axis / 2) ** 2 + (y - self.points_per_axis / 2) ** 2
-        return self.fat_radius[0] ** 2 > circle_radius > self.fat_radius[1] ** 2
+        return circle_radius < self.fat_radius[0] ** 2
 
     def is_muscle(self, x, y):
         circle_radius = (x - self.points_per_axis / 2) ** 2 + (y - self.points_per_axis / 2) ** 2
-        return self.muscle_radius[0] ** 2 > circle_radius > self.muscle_radius[1] ** 2
+        return circle_radius < self.muscle_radius[0] ** 2
 
     def is_tumor(self, x, y):
         circle_radius = (x - self.points_per_axis / 2) ** 2 + (y - self.points_per_axis / 2) ** 2
