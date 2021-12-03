@@ -8,19 +8,6 @@ class Arm:
     tumor_radius = 50
     nerve_radius = 25
 
-    # Ultrasound parameters for the different tissues
-    #
-    # This is an array of tuples. The first parameter is the absorption coefficient, then the
-    # second parameter is the speed of sound in that material. The index corresponds to the
-    # number of the tissue as defined in the comment before creating the image.
-    us_parameters = [
-        (0, 0),
-        (0.9, 1476),
-        (0.54, 1580),
-        (0.66, 1564),
-        (1.1, 1630)
-    ]
-
     def __init__(self, distance):
         # We'll have 100 points per cm, showing [-3,3] cm on the plot.
         self.subject = np.zeros((self.points_per_axis, self.points_per_axis))

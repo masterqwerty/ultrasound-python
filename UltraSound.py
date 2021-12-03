@@ -14,6 +14,18 @@ class UltraSound:
     noise_std_dev = 0.001  # W/cm^2, Gaussian
     speckle_mean = 1  # Rayleigh Dist
 
+    # Ultrasound parameters for the different tissues
+    #
+    # This is an array of tuples. The first parameter is the absorption coefficient, then the
+    # second parameter is the speed of sound in that material.
+    tissue_params = [
+        (0, 0),        # Empty space
+        (0.9, 1476),   # Fat
+        (0.54, 1580),  # Muscle
+        (0.66, 1564),  # Tumor
+        (1.1, 1630)    # Nerve
+    ]
+
     # Transmitted intensity formula
     def transmit(self, Z1, Z2):
         T_I = 4*Z1*Z2/((Z1 + Z2)**2)
@@ -31,3 +43,12 @@ class UltraSound:
         new_mu = mu / 4.343 * self.carrier_frequency
         self.intensity *= np.exp(-new_mu*z)
         return self.intensity
+
+    def gen_image(self, subject):
+        image = subject
+        for x in range(len(subject)):
+            for y in range(len(subject[x])):
+                image[x][y] *= np.random.rayleigh()  # Speckle
+                image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
+
+        return image
