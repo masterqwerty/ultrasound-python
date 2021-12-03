@@ -6,8 +6,8 @@ class UltraSound:
         self.intensity = self.input_intensity
         self.array_width = arr_width
         self.carrier_frequency = freq  # MHz
-        self.axial_res = axial
-        self.lateral_res = lateral
+        self.axial_res = axial * 10  # cm
+        self.lateral_res = lateral * 10  # cm
         pass
 
     input_intensity = 0.1  # W/cm^2
@@ -59,7 +59,7 @@ class UltraSound:
 
     def gen_image(self, subject):
         image = subject.copy()
-        pixel_distance = 0.01  # cm
+        pixel_distance = 0.01
         for x in range(len(subject)):
             # Reset intensity
             self.intensity = self.input_intensity
@@ -77,6 +77,7 @@ class UltraSound:
                     image[x][y] = self.intensity
                     T_I = self.transmit(Z1, Z2)
                     R_I = self.reflect(Z1, Z2)
+                    # self.propagate(self.tissue_params[current_tissue]["absorption"], pixel_distance)
                     if last_tissue != current_tissue:
                         for yi in range(y+1):
                             if int(subject[x][yi]) != 0:
@@ -87,4 +88,22 @@ class UltraSound:
 
                 last_tissue = current_tissue
 
-        return image
+        # Now compute the image by taking averages based on axial and lateral resolutions.
+        num_axial = int(len(subject) / self.axial_res)
+        num_lateral = int(len(subject[0]) / self.lateral_res)
+
+        final_image = np.zeros((num_axial, num_lateral))
+
+        axial = int(self.axial_res)
+        lateral = int(self.lateral_res)
+
+        for i in range(num_axial):
+            for j in range(num_lateral):
+                i_start = i * axial
+                i_end = (i + 1) * axial
+                j_start = j * lateral
+                j_end = (j + 1) * lateral
+                data = image[i_start:i_end, j_start:j_end]
+                final_image[i][j] = np.average(data)
+
+        return final_image
