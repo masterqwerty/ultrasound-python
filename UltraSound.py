@@ -15,15 +15,32 @@ class UltraSound:
     speckle_mean = 1  # Rayleigh Dist
 
     # Ultrasound parameters for the different tissues
-    #
-    # This is an array of tuples. The first parameter is the absorption coefficient, then the
-    # second parameter is the speed of sound in that material.
     tissue_params = [
-        (0, 0),        # Empty space
-        (0.9, 1476),   # Fat
-        (0.54, 1580),  # Muscle
-        (0.66, 1564),  # Tumor
-        (1.1, 1630)    # Nerve
+        {  # Empty space
+            "density": 0,
+            "absorption": 0,
+            "speed": 0
+        },
+        {  # Fat
+            "density": 0.6,
+            "absorption": 0.9,
+            "speed": 1476
+        },
+        {  # Muscle
+            "density": 0.9,
+            "absorption": 0.54,
+            "speed": 1580
+        },
+        {  # Tumor
+            "density": 0.8,
+            "absorption": 0.66,
+            "speed": 1564
+        },
+        {  # Nerve
+            "density": 0.9,
+            "absorption": 1.1,
+            "speed": 1630
+        }
     ]
 
     # Transmitted intensity formula
@@ -46,9 +63,28 @@ class UltraSound:
 
     def gen_image(self, subject):
         image = subject
-        for x in range(len(subject)):
-            for y in range(len(subject[x])):
+        pixel_distance = 0.01  # cm
+        for y in range(len(subject)):
+            # Reset intensity
+            self.intensity = self.input_intensity
+            last_tissue = 0
+            for x in range(len(subject[y])):
+                current_tissue = int(image[x][y])  # Grab the number before we put the intensity in.
+
+                # Calculate impedances.
+                Z1 = self.tissue_params[last_tissue]["density"] * self.tissue_params[last_tissue]["speed"]
+                Z2 = self.tissue_params[current_tissue]["density"] * self.tissue_params[current_tissue]["speed"]
+
+                if current_tissue == 0 or last_tissue == 0:
+                    image[x][y] = self.input_intensity  # Ignore any empty space.
+                elif current_tissue == last_tissue:
+                    image[x][y] = self.propagate(self.tissue_params[current_tissue]["absorption"], pixel_distance)
+                else:
+                    image[x][y] = self.transmit(Z1, Z2)[0]
+
                 image[x][y] *= np.random.rayleigh()  # Speckle
                 image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
+
+                last_tissue = current_tissue  # Set the last tissue, so we'll be able to see boundaries
 
         return image

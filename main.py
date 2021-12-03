@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    us = UltraSound.UltraSound(1, 5, 1, 1)
+    us = UltraSound.UltraSound(1, 1, 1, 1)
     arm = Arm.Arm(0.1)
 
     image = us.gen_image(arm.subject)
@@ -12,7 +12,7 @@ def main():
     color_map = plt.imshow(image, extent=[-3, 3, -3, 3])
     plt.xlabel("cm")
     plt.ylabel("cm")
-    color_map.set_cmap("Greys")
+    color_map.set_cmap("Greys_r")
     plt.colorbar()
     plt.show()
 
