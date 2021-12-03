@@ -26,7 +26,7 @@ class UltraSound:
         self.intensity *= R_I
         return self.intensity, R_I
 
-    # Propagation, mu is in untis of dB/(cm*MHz)
+    # Propagation, mu is in units of dB/(cm*MHz)
     def propagate(self, mu, z):
         new_mu = mu / 4.343 * self.carrier_frequency
         self.intensity *= np.exp(-new_mu*z)

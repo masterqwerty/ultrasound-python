@@ -1,9 +1,17 @@
 import UltraSound
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import kde
 
-us = UltraSound.UltraSound(1, 5, 1, 1)
 
-I_1 = us.reflect(100, 200)
-I_2 = us.propagate(0.9, 3)
+def main():
+    data = [[1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]]
+    color_map = plt.imshow(data)
+    color_map.set_cmap("Greys_r")
+    plt.show()
 
-print(I_1, I_2)
 
+if __name__ == "__main__":
+    main()
