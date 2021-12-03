@@ -83,8 +83,8 @@ class UltraSound:
                     #         if int(subject[x][yi]) != 0:
                     #             self.intensity *= R_I
 
-                # image[x][y] *= np.random.rayleigh()  # Speckle
-                # image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
+                image[x][y] *= np.random.rayleigh()  # Speckle
+                image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
 
                 last_tissue = current_tissue
 
