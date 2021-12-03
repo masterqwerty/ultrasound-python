@@ -58,28 +58,32 @@ class UltraSound:
         return self.intensity
 
     def gen_image(self, subject):
-        image = subject
+        image = subject.copy()
         pixel_distance = 0.01  # cm
         for x in range(len(subject)):
             # Reset intensity
             self.intensity = self.input_intensity
             last_tissue = 0
             for y in range(len(subject[x])):
-                current_tissue = int(image[x][y])  # Grab the number before we put the intensity in.
+                current_tissue = int(subject[x][y])  # Get the tissue type
 
                 # Calculate impedances.
                 Z1 = self.tissue_params[last_tissue]["density"] * self.tissue_params[last_tissue]["speed"]
                 Z2 = self.tissue_params[current_tissue]["density"] * self.tissue_params[current_tissue]["speed"]
 
                 if current_tissue == 0 or last_tissue == 0:
-                    image[x][y] = self.input_intensity  # Ignore any empty space.
+                    image[x][y] = 0.01  # Ignore any empty space.
                 else:
+                    image[x][y] = self.intensity
                     T_I = self.transmit(Z1, Z2)
                     R_I = self.reflect(Z1, Z2)
-                    image[x][y] = T_I * self.propagate(self.tissue_params[current_tissue]["absorption"], pixel_distance)
+                    if last_tissue != current_tissue:
+                        for yi in range(y+1):
+                            if int(subject[x][yi]) != 0:
+                                self.intensity *= T_I
 
-                # image[x][y] *= np.random.rayleigh()  # Speckle
-                # image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
+                image[x][y] *= np.random.rayleigh()  # Speckle
+                image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
 
                 last_tissue = current_tissue
 

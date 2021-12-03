@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    us = UltraSound.UltraSound(1, 1, 1, 1)
+    us = UltraSound.UltraSound(1, 0.2, 1, 1)
     arm = Arm.Arm(0.1)
 
     image = us.gen_image(arm.subject)
