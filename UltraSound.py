@@ -45,15 +45,11 @@ class UltraSound:
 
     # Transmitted intensity formula
     def transmit(self, Z1, Z2):
-        T_I = 4*Z1*Z2/((Z1 + Z2)**2)
-        self.intensity *= T_I
-        return self.intensity, T_I
+        return 4 * Z1 * Z2 / ((Z1 + Z2) ** 2)
 
     # Reflected intensity
     def reflect(self, Z1, Z2):
-        R_I = (Z2-Z1)**2/((Z2+Z1)**2)
-        self.intensity *= R_I
-        return self.intensity, R_I
+        return (Z2 - Z1) ** 2 / ((Z2 + Z1) ** 2)
 
     # Propagation, mu is in units of dB/(cm*MHz)
     def propagate(self, mu, z):
@@ -64,11 +60,11 @@ class UltraSound:
     def gen_image(self, subject):
         image = subject
         pixel_distance = 0.01  # cm
-        for y in range(len(subject)):
+        for x in range(len(subject)):
             # Reset intensity
             self.intensity = self.input_intensity
             last_tissue = 0
-            for x in range(len(subject[y])):
+            for y in range(len(subject[x])):
                 current_tissue = int(image[x][y])  # Grab the number before we put the intensity in.
 
                 # Calculate impedances.
@@ -77,14 +73,14 @@ class UltraSound:
 
                 if current_tissue == 0 or last_tissue == 0:
                     image[x][y] = self.input_intensity  # Ignore any empty space.
-                elif current_tissue == last_tissue:
-                    image[x][y] = self.propagate(self.tissue_params[current_tissue]["absorption"], pixel_distance)
                 else:
-                    image[x][y] = self.transmit(Z1, Z2)[0]
+                    T_I = self.transmit(Z1, Z2)
+                    R_I = self.reflect(Z1, Z2)
+                    image[x][y] = T_I * self.propagate(self.tissue_params[current_tissue]["absorption"], pixel_distance)
 
-                image[x][y] *= np.random.rayleigh()  # Speckle
-                image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
+                # image[x][y] *= np.random.rayleigh()  # Speckle
+                # image[x][y] += np.random.normal(scale=self.noise_std_dev)  # Electronic Noise
 
-                last_tissue = current_tissue  # Set the last tissue, so we'll be able to see boundaries
+                last_tissue = current_tissue
 
         return image
