@@ -23,7 +23,7 @@ Here are the input parameters for the constructor (in order):
 
 ### Functions
 
-#### `reflect`
+#### `reflect(Z1, Z2)`
 
 Calculate the intensity of the reflected beam. Assumes a 90 degree incidence.
 
@@ -36,7 +36,7 @@ us.reflect(100, 200)
 | 1         | `Z1` | number | Acoustic impedance of the material the beam is coming from.       |
 | 2         | `Z2` | number | Acoustic impedance of the material the beam is reflecting off of. |
 
-#### `transmit`
+#### `transmit(Z1, Z2)`
 
 Calculate the intensity of the transmitted beam. Assumes a 90 degree incidence.
 
@@ -49,7 +49,7 @@ us.transmit(100, 200)
 | 1         | `Z1` | number | Acoustic impedance of the material the beam is coming from.            |
 | 2         | `Z2` | number | Acoustic impedance of the material the beam is being transmitted into. |
 
-#### `propagate`
+#### `propagate(mu, z)`
 
 Calculate the intensity of the beam after it has propagated through a material for a given distance.
 
