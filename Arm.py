@@ -1,37 +1,49 @@
 import numpy as np
 
-# Numbers inside the image:
-#
-# 0 - Empty space
-# 1 - Fat
-# 2 - Muscle
-# 3 - Tumor
-# 4 - Nerve
 
-
-class Tumor:
+class Arm:
     points_per_axis = 600
     fat_radius = (250, 225)
     muscle_radius = (225, 50)
     tumor_radius = 50
     nerve_radius = 25
 
+    # Ultrasound parameters for the different tissues
+    #
+    # This is an array of tuples. The first parameter is the absorption coefficient, then the
+    # second parameter is the speed of sound in that material. The index corresponds to the
+    # number of the tissue as defined in the comment before creating the image.
+    us_parameters = [
+        (0, 0),
+        (0.9, 1476),
+        (0.54, 1580),
+        (0.66, 1564),
+        (1.1, 1630)
+    ]
+
     def __init__(self, distance):
         # We'll have 100 points per cm, showing [-3,3] cm on the plot.
-        self.image = np.zeros((self.points_per_axis, self.points_per_axis))
+        self.subject = np.zeros((self.points_per_axis, self.points_per_axis))
 
         self.nerve_center = (300 + self.tumor_radius + self.nerve_radius + (distance * 100), 300)
-        # Put the circle of the arm in the middle. Fill with fat.
+
+        # Numbers inside the image:
+        #
+        # 0 - Empty space
+        # 1 - Fat
+        # 2 - Muscle
+        # 3 - Tumor
+        # 4 - Nerve
         for x in range(self.points_per_axis):
             for y in range(self.points_per_axis):
                 if self.is_nerve(x, y):
-                    self.image[x][y] = 4
+                    self.subject[x][y] = 4
                 elif self.is_fat(x, y):
-                    self.image[x][y] = 1
+                    self.subject[x][y] = 1
                 elif self.is_muscle(x, y):
-                    self.image[x][y] = 2
+                    self.subject[x][y] = 2
                 elif self.is_tumor(x, y):
-                    self.image[x][y] = 3
+                    self.subject[x][y] = 3
 
     def is_fat(self, x, y):
         circle_radius = (x - self.points_per_axis / 2) ** 2 + (y - self.points_per_axis / 2) ** 2

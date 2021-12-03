@@ -1,13 +1,13 @@
 import UltraSound
-import Tumor
+import Arm
 import matplotlib.pyplot as plt
 
 
 def main():
     us = UltraSound.UltraSound(1, 5, 1, 1)
-    tumor = Tumor.Tumor(0.1)
+    arm = Arm.Arm(0.1)
 
-    plt.imshow(tumor.image)
+    plt.imshow(arm.subject)
     plt.colorbar()
     plt.show()
     # data = [[1, 2, 3],
