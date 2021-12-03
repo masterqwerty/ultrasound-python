@@ -12,7 +12,7 @@ class Arm:
         # We'll have 100 points per cm, showing [-3,3] cm on the plot.
         self.subject = np.zeros((self.points_per_axis, self.points_per_axis))
 
-        self.nerve_center = (300 + self.tumor_radius + self.nerve_radius + (distance * 100), 300)
+        self.nerve_center = (300 + self.tumor_radius + self.nerve_radius + (distance * 10), 300)
 
         # Numbers inside the image:
         #
