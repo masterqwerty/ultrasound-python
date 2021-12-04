@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    us = UltraSound.UltraSound(1, 5, 0.5, 0.5)
+    us = UltraSound.UltraSound(1, 5, 0.1, 0.1)
     arm = Arm.Arm(0.5)
 
-    image = us.gen_image(arm.subject)
+    image = us.gen_image(arm)
 
     color_map = plt.imshow(image, extent=[-3, 3, -3, 3])
     plt.xlabel("cm")
