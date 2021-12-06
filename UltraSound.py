@@ -75,7 +75,7 @@ class UltraSound:
         subject = arm.subject
         image = subject.copy()
         pixel_distance = 0.01  # cm
-        adjustment_parameter = 0.002  # Parameter to account for losses.
+        adjustment_parameter = 0.005  # Parameter to account for losses.
         for x in range(len(subject)):
             # Reset intensity
             self.intensity = self.input_intensity
@@ -152,4 +152,4 @@ class UltraSound:
         print("Fat to Muscle: SNR - " + str(self.snr(fat_mean, muscle_stddev)) +
               ", CNR - " + str(self.cnr(fat_mean, muscle_mean, fat_stddev, muscle_stddev)))
 
-        return image
+        return final_image

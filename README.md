@@ -18,14 +18,14 @@ Here are the input parameters for the constructor (in order):
 |-----------|-------------|--------|----------------------------------------|
 | 1         | `arr_width` | number | Width of the linear array. (cm?)       |
 | 2         | `freq`      | number | Carrier frequency of the device. (MHz) |
-| 3         | `axial`     | number | Axial Resolution (mm?)                 |
-| 4         | `lateral`   | number | Lateral Resolution (mm?)               |
+| 3         | `axial`     | number | Axial Resolution (mm)                  |
+| 4         | `lateral`   | number | Lateral Resolution (mm)                |
 
 ### Functions
 
 #### `reflect(Z1, Z2)`
 
-Calculate the intensity of the reflected beam. Assumes a 90 degree incidence.
+Calculate the intensity of the reflected beam. Assumes a 90 degree incidence. Returns the amount reflected as well as the final intensity.
 
 ```python
 us.reflect(100, 200)
@@ -38,7 +38,7 @@ us.reflect(100, 200)
 
 #### `transmit(Z1, Z2)`
 
-Calculate the intensity of the transmitted beam. Assumes a 90 degree incidence.
+Calculate the intensity of the transmitted beam. Assumes a 90 degree incidence. Returns the amount transmitted as well as the final intesnity.
 
 ```python
 us.transmit(100, 200)
@@ -51,7 +51,7 @@ us.transmit(100, 200)
 
 #### `propagate(mu, z)`
 
-Calculate the intensity of the beam after it has propagated through a material for a given distance.
+Calculate the intensity of the beam after it has propagated through a material for a given distance. Returns the final intensity.
 
 ```python
 us.propagate(0.9, 3)
